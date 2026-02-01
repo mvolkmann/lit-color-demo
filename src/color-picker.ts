@@ -1,0 +1,71 @@
+import { css, html, LitElement } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+
+@customElement("color-picker")
+export class ColorPicker extends LitElement {
+  @property({ type: String }) labelWidth = "3rem";
+  @property({ type: Number }) red = 0;
+  @property({ type: Number }) green = 0;
+  @property({ type: Number }) blue = 0;
+
+  static styles = css`
+    :host {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    #sliders {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    #swatch {
+      background-color: black;
+      height: 5rem;
+      width: 5rem;
+    }
+  `;
+
+  get color() {
+    return `rgb(${this.red}, ${this.green}, ${this.blue})`;
+  }
+
+  private handleChange(event: CustomEvent) {
+    const { label, value } = event.detail;
+    (this as any)[label.toLowerCase()] = value;
+    const swatch = this.renderRoot.querySelector("#swatch") as HTMLElement;
+    swatch.style.backgroundColor = this.color;
+
+    this.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { value: this.color },
+        bubbles: true,
+      }),
+    );
+  }
+
+  render() {
+    return html`
+      <div id="swatch"></div>
+      <div id="sliders">
+        <!-- prettier-ignore -->
+        ${this.makeSlider("Red")}
+        ${this.makeSlider("Green")}
+        ${this.makeSlider("Blue")}
+      </div>
+    `;
+  }
+
+  makeSlider(label: string) {
+    return html`
+      <number-slider
+        label=${label}
+        label-width="this.labelWidth"
+        max="255"
+        value=${(this as any)[label.toLowerCase()]}
+        @change=${this.handleChange}
+      ></number-slider>
+    `;
+  }
+}
