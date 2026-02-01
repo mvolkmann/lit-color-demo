@@ -1,10 +1,9 @@
 import { css, html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, query } from "lit/decorators.js";
 
 @customElement("color-demo")
 export class ColorDemo extends LitElement {
-  @property({ type: String }) color = "black";
-  @property({ type: Number }) size = 18;
+  @query("p") p!: HTMLParagraphElement;
 
   static styles = css`
     :host {
@@ -14,35 +13,28 @@ export class ColorDemo extends LitElement {
       font-family: sans-serif;
     }
     p {
-      color: this.color;
-      font-size: this.size + "px";
+      font-size: 18px;
     }
   `;
 
   private colorChange(event: CustomEvent) {
-    this.color = event.detail.value;
     const p = this.renderRoot.querySelector("p") as HTMLElement;
-    p.style.color = this.color;
+    p.style.color = event.detail.value;
   }
 
   private sizeChange(event: CustomEvent) {
-    this.size = event.detail.value;
-    const p = this.renderRoot.querySelector("p") as HTMLElement;
-    p.style.fontSize = this.size + "px";
+    this.p.style.fontSize = event.detail.value + "px";
   }
 
   render() {
     return html`
-      <color-picker
-        color="this.color"
-        @change=${this.colorChange}
-      ></color-picker>
+      <color-picker @change=${this.colorChange}></color-picker>
       <number-slider
         label="Size"
         max="48"
         min="12"
         name="size"
-        .value=${this.size}
+        value="18"
         @change=${this.sizeChange}
       ></number-slider>
       <p>This is a test.</p>

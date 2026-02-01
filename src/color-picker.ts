@@ -1,5 +1,5 @@
 import { css, html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property, query } from "lit/decorators.js";
 
 @customElement("color-picker")
 export class ColorPicker extends LitElement {
@@ -7,6 +7,8 @@ export class ColorPicker extends LitElement {
   @property({ type: Number }) red = 0;
   @property({ type: Number }) green = 0;
   @property({ type: Number }) blue = 0;
+
+  @query("#swatch") swatch!: HTMLDivElement;
 
   static styles = css`
     :host {
@@ -34,8 +36,7 @@ export class ColorPicker extends LitElement {
   private handleChange(event: CustomEvent) {
     const { label, value } = event.detail;
     (this as any)[label.toLowerCase()] = value;
-    const swatch = this.renderRoot.querySelector("#swatch") as HTMLElement;
-    swatch.style.backgroundColor = this.color;
+    this.swatch.style.backgroundColor = this.color;
 
     this.dispatchEvent(
       new CustomEvent("change", {
