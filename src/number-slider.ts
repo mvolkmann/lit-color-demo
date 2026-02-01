@@ -1,5 +1,5 @@
 import { css, html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, query } from "lit/decorators.js";
 
 @customElement("number-slider")
 export class NumberSlider extends LitElement {
@@ -8,6 +8,8 @@ export class NumberSlider extends LitElement {
   @property({ type: Number }) max = 100;
   @property({ type: Number }) min = 0;
   @property({ type: Number }) value = 0;
+
+  @query("label") labelEl!: HTMLLabelElement;
 
   static styles = css`
     :host {
@@ -26,6 +28,10 @@ export class NumberSlider extends LitElement {
       width: this.labelWidth;
     }
   `;
+
+  firstUpdated(): void {
+    this.labelEl.style.width = this.labelWidth;
+  }
 
   handleInput(event: Event) {
     const input = event.target as HTMLInputElement;

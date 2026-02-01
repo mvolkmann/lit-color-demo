@@ -4,9 +4,9 @@ import { customElement, property, query } from "lit/decorators.js";
 @customElement("color-picker")
 export class ColorPicker extends LitElement {
   @property({ type: String }) labelWidth = "3rem";
-  @property({ type: Number }) red = 0;
-  @property({ type: Number }) green = 0;
-  @property({ type: Number }) blue = 0;
+  red = 0;
+  green = 0;
+  blue = 0;
 
   @query("#swatch") swatch!: HTMLDivElement;
 
@@ -62,7 +62,7 @@ export class ColorPicker extends LitElement {
     return html`
       <number-slider
         label=${label}
-        label-width="this.labelWidth"
+        labelWidth=${this.labelWidth}
         max="255"
         value=${(this as any)[label.toLowerCase()]}
         @change=${this.handleChange}

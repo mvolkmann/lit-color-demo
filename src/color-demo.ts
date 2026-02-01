@@ -5,6 +5,8 @@ import { customElement, query } from "lit/decorators.js";
 export class ColorDemo extends LitElement {
   @query("p") p!: HTMLParagraphElement;
 
+  static startSize = 18;
+
   static styles = css`
     :host {
       display: flex;
@@ -13,13 +15,12 @@ export class ColorDemo extends LitElement {
       font-family: sans-serif;
     }
     p {
-      font-size: 18px;
+      font-size: ${ColorDemo.startSize}px;
     }
   `;
 
   private colorChange(event: CustomEvent) {
-    const p = this.renderRoot.querySelector("p") as HTMLElement;
-    p.style.color = event.detail.value;
+    this.p.style.color = event.detail.value;
   }
 
   private sizeChange(event: CustomEvent) {
@@ -34,7 +35,7 @@ export class ColorDemo extends LitElement {
         max="48"
         min="12"
         name="size"
-        value="18"
+        value=${ColorDemo.startSize}
         @change=${this.sizeChange}
       ></number-slider>
       <p>This is a test.</p>
