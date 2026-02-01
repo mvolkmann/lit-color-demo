@@ -1,5 +1,6 @@
 import { css, html, LitElement } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import "./number-slider.js";
 
 @customElement("color-picker")
 export class ColorPicker extends LitElement {
